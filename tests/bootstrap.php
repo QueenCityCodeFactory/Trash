@@ -27,4 +27,4 @@ if (file_exists($root . '/config/bootstrap.php')) {
 
 require $root . '/vendor/cakephp/cakephp/tests/bootstrap.php';
 
-\Cake\Core\Plugin::load('Muffin/Trash', ['path' => dirname(dirname(__FILE__)) . DS]);
+\Cake\Core\Plugin::load('QueenCityCodeFactory/Trash', ['path' => dirname(dirname(__FILE__)) . DS]);

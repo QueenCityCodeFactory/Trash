@@ -12,19 +12,19 @@ Adds "soft"-delete support to CakePHP 3 tables.
 Using [Composer][composer]:
 
 ```
-composer require muffin/trash
+composer require queencitycodefactory/trash
 ```
 
 You then need to load the plugin. You can use the shell command:
 
 ```
-bin/cake plugin load Muffin/Trash
+bin/cake plugin load QueenCityCodeFactory/Trash
 ```
 
-or by manually adding statement shown below to `bootstrap.php`:
+or by manually adding statement shown below to `Application.php`:
 
 ```php
-Plugin::load('Muffin/Trash');
+$this->addPlugin('QueenCityCodeFactory/Trash');
 ```
 
 ## Usage
@@ -33,7 +33,7 @@ In your table(s), add the behavior like you would for any other behavior:
 
 ```php
 // in the initialize() method
-$this->addBehavior('Muffin/Trash.Trash');
+$this->addBehavior('QueenCityCodeFactory/Trash.Trash');
 ```
 
 By default, the behavior will auto-detect the `DATETIME` column used to track trashed (soft-deleted) records but
@@ -41,7 +41,7 @@ only if you are using `deleted` or `trashed` as names. Otherwise, you could cust
 
 ```php
 // in the initialize() method
-$this->addBehavior('Muffin/Trash.Trash', [
+$this->addBehavior('QueenCityCodeFactory/Trash.Trash', [
     'field' => 'deleted_at'
 ]);
 ```
@@ -49,7 +49,7 @@ $this->addBehavior('Muffin/Trash.Trash', [
 or, at the global level, in `bootstrap.php`:
 
 ```php
-Configure::write('Muffin/Trash.field', 'deleted_at');
+Configure::write('QueenCityCodeFactory/Trash.field', 'deleted_at');
 ```
 
 Finally, if you would like to keep the default cake behavior when running `find()` or `delete()` operations and
@@ -57,7 +57,7 @@ explicitly call the behavior when you need 'trash'-ing functionality, just disab
 
 ```php
 // in the initialize() method
-$this->addBehavior('Muffin/Trash.Trash', [
+$this->addBehavior('QueenCityCodeFactory/Trash.Trash', [
     'events' => ['Model.beforeFind'] // enables the beforeFind event only, false to disable both
 ]);
 ```
@@ -96,7 +96,7 @@ To ensure your PRs are considered for upstream, you MUST follow the CakePHP codi
 
 ## Bugs & Feedback
 
-http://github.com/usemuffin/trash/issues
+http://github.com/QueenCityCodeFactory/trash/issues
 
 ## License
 

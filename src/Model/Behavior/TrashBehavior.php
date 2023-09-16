@@ -1,5 +1,5 @@
 <?php
-namespace Muffin\Trash\Model\Behavior;
+namespace QueenCityCodeFactory\Trash\Model\Behavior;
 
 use ArrayObject;
 use Cake\Core\Configure;

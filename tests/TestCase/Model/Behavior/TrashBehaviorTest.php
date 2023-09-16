@@ -1,17 +1,17 @@
 <?php
-namespace Muffin\Trash\Test\TestCase\Model\Behavior;
+namespace QueenCityCodeFactory\Trash\Test\TestCase\Model\Behavior;
 
 use Cake\Core\Configure;
 use Cake\ORM\Entity;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
-use Muffin\Trash\Model\Behavior\TrashBehavior;
+use QueenCityCodeFactory\Trash\Model\Behavior\TrashBehavior;
 
 /**
  * @property \Cake\ORM\Table Users
  * @property \Cake\ORM\Table Comments
  * @property \Cake\ORM\Table Articles
- * @property \Muffin\Trash\Model\Behavior\TrashBehavior Behavior
+ * @property \QueenCityCodeFactory\Trash\Model\Behavior\TrashBehavior Behavior
  */
 class TrashBehaviorTest extends TestCase
 {
@@ -21,11 +21,11 @@ class TrashBehaviorTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'plugin.Muffin/Trash.articles',
-        'plugin.Muffin/Trash.comments',
-        'plugin.Muffin/Trash.users',
-        'plugin.Muffin/Trash.articles_users',
-        'plugin.Muffin/Trash.composite_articles_users',
+        'plugin.QueenCityCodeFactory/Trash.articles',
+        'plugin.QueenCityCodeFactory/Trash.comments',
+        'plugin.QueenCityCodeFactory/Trash.users',
+        'plugin.QueenCityCodeFactory/Trash.articles_users',
+        'plugin.QueenCityCodeFactory/Trash.composite_articles_users',
     ];
 
     /**
@@ -37,33 +37,33 @@ class TrashBehaviorTest extends TestCase
     {
         parent::setUp();
 
-        $this->Users = TableRegistry::get('Muffin/Trash.Users', ['table' => 'trash_users']);
+        $this->Users = TableRegistry::get('QueenCityCodeFactory/Trash.Users', ['table' => 'trash_users']);
         $this->Users->belongsToMany('Articles', [
-            'className' => 'Muffin/Trash.Articles',
+            'className' => 'QueenCityCodeFactory/Trash.Articles',
             'joinTable' => 'trash_articles_users',
             'foreignKey' => 'user_id',
             'targetForeignKey' => 'article_id',
         ]);
 
-        $this->Comments = TableRegistry::get('Muffin/Trash.Comments', ['table' => 'trash_comments']);
+        $this->Comments = TableRegistry::get('QueenCityCodeFactory/Trash.Comments', ['table' => 'trash_comments']);
         $this->Comments->belongsTo('Articles', [
-            'className' => 'Muffin/Trash.Articles',
+            'className' => 'QueenCityCodeFactory/Trash.Articles',
             'foreignKey' => 'article_id',
         ]);
         $this->Comments->addBehavior('CounterCache', ['Articles' => [
             'comment_count',
             'total_comment_count' => ['finder' => 'withTrashed']
         ]]);
-        $this->Comments->addBehavior('Muffin/Trash.Trash');
+        $this->Comments->addBehavior('QueenCityCodeFactory/Trash.Trash');
 
-        $this->Articles = TableRegistry::get('Muffin/Trash.Articles', ['table' => 'trash_articles']);
-        $this->Articles->addBehavior('Muffin/Trash.Trash');
+        $this->Articles = TableRegistry::get('QueenCityCodeFactory/Trash.Articles', ['table' => 'trash_articles']);
+        $this->Articles->addBehavior('QueenCityCodeFactory/Trash.Trash');
         $this->Articles->hasMany('Comments', [
-            'className' => 'Muffin/Trash.Comments',
+            'className' => 'QueenCityCodeFactory/Trash.Comments',
             'foreignKey' => 'article_id'
         ]);
         $this->Articles->belongsToMany('Users', [
-            'className' => 'Muffin/Trash.Users',
+            'className' => 'QueenCityCodeFactory/Trash.Users',
             'joinTable' => 'trash_articles_users',
             'foreignKey' => 'article_id',
             'targetForeignKey' => 'user_id',
@@ -71,8 +71,8 @@ class TrashBehaviorTest extends TestCase
 
         $this->Behavior = $this->Articles->behaviors()->Trash;
 
-        $this->CompositeArticlesUsers = TableRegistry::get('Muffin/Trash.CompositeArticlesUsers', ['table' => 'trash_composite_articles_users']);
-        $this->CompositeArticlesUsers->addBehavior('Muffin/Trash.Trash');
+        $this->CompositeArticlesUsers = TableRegistry::get('QueenCityCodeFactory/Trash.CompositeArticlesUsers', ['table' => 'trash_composite_articles_users']);
+        $this->CompositeArticlesUsers->addBehavior('QueenCityCodeFactory/Trash.Trash');
     }
 
     /**
@@ -370,7 +370,7 @@ class TrashBehaviorTest extends TestCase
         $trash = new TrashBehavior($this->Users, ['field' => 'deleted']);
         $this->assertEquals('Users.deleted', $trash->getTrashField());
 
-        Configure::write('Muffin/Trash.field', 'trashed');
+        Configure::write('QueenCityCodeFactory/Trash.field', 'trashed');
         $trash = new TrashBehavior($this->Users);
         $this->assertEquals('Users.trashed', $trash->getTrashField());
     }

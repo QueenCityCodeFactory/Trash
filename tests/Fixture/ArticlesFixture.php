@@ -1,5 +1,5 @@
 <?php
-namespace Muffin\Trash\Test\Fixture;
+namespace QueenCityCodeFactory\Trash\Test\Fixture;
 
 use Cake\I18n\Time;
 use Cake\TestSuite\Fixture\TestFixture;

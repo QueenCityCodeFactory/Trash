@@ -6,7 +6,8 @@
         "cakephp",
         "muffin",
         "trash",
-        "orm"
+        "orm",
+        "queencitycodefactory"
     ],
     "homepage": "https://github.com/queencitycodefactory/trash",
     "license": "MIT",
@@ -28,7 +29,7 @@
         },
         {
             "name": "Others",
-            "homepage": "https://github.com/usemuffin/trash/graphs/contributors"
+            "homepage": "https://github.com/queencitycodefactory/trash/graphs/contributors"
         }
     ],
     "support": {
@@ -44,12 +45,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Muffin\\Trash\\": "src"
+            "QueenCityCodeFactory\\Trash\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Muffin\\Trash\\Test\\": "tests"
+            "QueenCityCodeFactory\\Trash\\Test\\": "tests"
         }
     }
 }
