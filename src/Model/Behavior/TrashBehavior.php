@@ -20,7 +20,6 @@ use RuntimeException;
  */
 class TrashBehavior extends Behavior
 {
-
     /**
      * Default configuration.
      *
@@ -48,7 +47,7 @@ class TrashBehavior extends Behavior
     public function initialize(array $config)
     {
         if (!empty($config['events'])) {
-            $this->config('events', $config['events'], false);
+            $this->setConfig('events', $config['events'], false);
         }
     }
 
@@ -61,10 +60,10 @@ class TrashBehavior extends Behavior
     public function implementedEvents()
     {
         $events = [];
-        if ($this->config('events') === false) {
+        if ($this->getConfig('events') === false) {
             return $events;
         }
-        foreach ((array)$this->config('events') as $eventKey => $event) {
+        foreach ((array)$this->getConfig('events') as $eventKey => $event) {
             if (is_numeric($eventKey)) {
                 $eventKey = $event;
                 $event = null;
@@ -75,9 +74,9 @@ class TrashBehavior extends Behavior
             if (!is_array($event)) {
                 throw new \InvalidArgumentException('Event should be string or array');
             }
-            $priority = $this->config('priority');
+            $priority = $this->getConfig('priority');
             if (!array_key_exists('callable', $event) || $event['callable'] === null) {
-                list(, $event['callable']) = pluginSplit($eventKey);
+                [, $event['callable']] = pluginSplit($eventKey);
             }
             if ($priority && !array_key_exists('priority', $event)) {
                 $event['priority'] = $priority;
@@ -105,9 +104,9 @@ class TrashBehavior extends Behavior
 
         $event->stopPropagation();
 
-        $event->subject()->dispatchEvent('Model.afterDelete', [
+        $event->getSubject()->dispatchEvent('Model.afterDelete', [
             'entity' => $entity,
-            'options' => $options
+            'options' => $options,
         ]);
 
         return true;
@@ -122,7 +121,7 @@ class TrashBehavior extends Behavior
      */
     public function trash(EntityInterface $entity)
     {
-        $primaryKey = (array)$this->_table->primaryKey();
+        $primaryKey = (array)$this->_table->getPrimaryKey();
 
         if (!$entity->has($primaryKey)) {
             throw new RuntimeException();
@@ -257,7 +256,7 @@ class TrashBehavior extends Behavior
 
         foreach ($this->_table->associations() as $association) {
             if ($this->_isRecursable($association, $this->_table)) {
-                return $association->target()->cascadingRestoreTrash();
+                return $association->getTarget()->cascadingRestoreTrash();
             }
         }
 
@@ -286,10 +285,10 @@ class TrashBehavior extends Behavior
      */
     public function getTrashField($aliased = true)
     {
-        $field = $this->config('field');
+        $field = $this->getConfig('field');
 
         if (empty($field)) {
-            $columns = $this->_table->schema()->columns();
+            $columns = $this->_table->getSchema()->columns();
             foreach (['deleted', 'trashed'] as $name) {
                 if (in_array($name, $columns, true)) {
                     $field = $name;
@@ -305,7 +304,7 @@ class TrashBehavior extends Behavior
                 throw new RuntimeException('TrashBehavior: "field" config needs to be provided.');
             }
 
-            $this->config('field', $field);
+            $this->setConfig('field', $field);
         }
 
         if ($aliased) {
@@ -324,10 +323,12 @@ class TrashBehavior extends Behavior
      */
     protected function _isRecursable(Association $association, Table $table)
     {
-        if ($association->target()->hasBehavior('Trash')
+        if (
+            $association->getTarget()->hasBehavior('Trash')
             && $association->isOwningSide($table)
-            && $association->dependent()
-            && $association->cascadeCallbacks()) {
+            && $association->getDependent()
+            && $association->getCascadeCallbacks()
+        ) {
             return true;
         }
 
